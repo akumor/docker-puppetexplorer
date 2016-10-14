@@ -1,5 +1,5 @@
 FROM centos:centos7
-MAINTAINER Techops email: techops@nodalexchange.com
+MAINTAINER email: akumor@users.noreply.github.com 
 
 # Announce the initiation of the Dockerfile
 RUN echo 'Starting docker-puppetexplorer Dockerfile execution...'

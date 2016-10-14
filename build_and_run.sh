@@ -14,10 +14,6 @@ docker build --rm=true --tag=puppetexplorer .
 # Run the image in docker
 docker run --cpuset-cpus="0,1" \
            --memory="4g" \
-           -v "${HOST_DIR}:/home/makerpm/output/:rw" \
-           --dns=192.168.109.103 \
-           --dns=192.168.109.110 \
-           --dns-search=nex.lan \
            --name="puppetexplorer-container" \
            --tty=false \
            puppetexplorer
