@@ -2,7 +2,7 @@
 SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 cd "${SCRIPT_DIR}"
 
-HOST_DIR="/tmp/"
+[ "${1}" == "" ] && echo 'ERROR: This script requires the puppetdb server FQDN/IP as an argument.' && exit 1
 
 # Remove unused docker images
 for x in $(docker images -q); do docker rmi $x; done
@@ -16,5 +16,6 @@ docker run --cpuset-cpus="0,1" \
            --memory="4g" \
            --name="puppetexplorer-container" \
            --tty=false \
+           -e PUPPET_SERVER="${1}" \
            akumor/puppetexplorer
                        

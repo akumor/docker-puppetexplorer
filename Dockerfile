@@ -10,10 +10,17 @@ ADD ./puppetexplorer-2.0.0-1.noarch.rpm /root/
 # Run updates and install some basic necessary packages
 RUN yum -y localinstall /root/puppetexplorer-2.0.0-1.noarch.rpm && \
     yum -y --setopt=tsflags=nodocs update && \
-    yum -y --setopt=tsflags=nodocs install httpd && \
+    yum -y --setopt=tsflags=nodocs install httpd mod_ssl && \
     yum clean all
 
 RUN cp -R /usr/share/puppetexplorer/* /var/www/html/ && mv /var/www/html/config.js.example /var/www/html/config.js
+
+RUN echo 'SSLProxyEngine On' >> /etc/httpd/conf/httpd.conf && \
+    echo 'RequestHeader set Front-End-Https "On"' >> /etc/httpd/conf/httpd.conf && \
+    echo 'RequestHeader set Access-Control-Expose-Headers "X-Records"' >> /etc/httpd/conf/httpd.conf && \
+    echo 'RequestHeader set Access-Control-Allow-Origin "On"' >> /etc/httpd/conf/httpd.conf && \
+    echo 'ProxyPass /api https://${PUPPET_SERVER}:8081/' >> /etc/httpd/conf/httpd.conf && \
+    echo 'ProxyPassReverse /api https://${PUPPET_SERVER}:8081/' >> /etc/httpd/conf/httpd.conf
 
 EXPOSE 80
 
